@@ -14,8 +14,8 @@ library Roles {
    * @dev give an account access to this role
    */
   function add(Role storage role, address account) internal {
-    require(account != address(0), "");
-    require(!has(role, account), "");
+    require(account != address(0), "Cannot add account owner to role");
+    require(!has(role, account), "Account already added to role");
 
     role.bearer[account] = true;
   }
@@ -24,8 +24,8 @@ library Roles {
    * @dev remove an account's access to this role
    */
   function remove(Role storage role, address account) internal {
-    require(account != address(0), "");
-    require(has(role, account), "");
+    require(account != address(0), "Cannot remove account owner from role");
+    require(has(role, account), "Cannot remove account that does not exist in role");
 
     role.bearer[account] = false;
   }
@@ -39,7 +39,7 @@ library Roles {
     view
     returns (bool)
   {
-    require(account != address(0), "");
+    require(account != address(0), "Cannot search for account owner in role");
     return role.bearer[account];
   }
 }
