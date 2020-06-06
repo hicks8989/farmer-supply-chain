@@ -1,4 +1,6 @@
-pragma solidity ^0.4.24;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.24;
+
 // Define a contract 'Supplychain'
 contract SupplyChain {
 
@@ -17,10 +19,10 @@ contract SupplyChain {
   // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash, 
   // that track its journey through the supply chain -- to be sent from DApp.
   mapping (uint => string[]) itemsHistory;
-  
+
   // Define enum 'State' with the following values:
-  enum State 
-  { 
+  enum State
+  {
     Harvested,  // 0
     Processed,  // 1
     Packed,     // 2
@@ -70,16 +72,16 @@ contract SupplyChain {
 
   // Define a modifer that verifies the Caller
   modifier verifyCaller (address _address) {
-    require(msg.sender == _address); 
+    require(msg.sender == _address);
     _;
   }
 
   // Define a modifier that checks if the paid amount is sufficient to cover the price
-  modifier paidEnough(uint _price) { 
-    require(msg.value >= _price); 
+  modifier paidEnough(uint _price) {
+    require(msg.value >= _price);
     _;
   }
-  
+
   // Define a modifier that checks the price and refunds the remaining balance
   modifier checkValue(uint _upc) {
     _;
@@ -99,7 +101,7 @@ contract SupplyChain {
 
     _;
   }
-  
+
   // Define a modifier that checks if an item.state of a upc is Packed
   modifier packed(uint _upc) {
 
@@ -117,7 +119,7 @@ contract SupplyChain {
 
     _;
   }
-  
+
   // Define a modifier that checks if an item.state of a upc is Shipped
   modifier shipped(uint _upc) {
 
@@ -153,14 +155,14 @@ contract SupplyChain {
   }
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
-  function harvestItem(uint _upc, address _originFarmerID, string _originFarmName, string _originFarmInformation, string  _originFarmLatitude, string  _originFarmLongitude, string  _productNotes) public 
+  function harvestItem(uint _upc, address _originFarmerID, string memory _originFarmName, string memory _originFarmInformation, string memory _originFarmLatitude, string memory _originFarmLongitude, string memory _productNotes) public
   {
     // Add the new item as part of Harvest
-    
+
     // Increment sku
     sku = sku + 1;
     // Emit the appropriate event
-    
+
   }
 
   // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
@@ -269,16 +271,15 @@ contract SupplyChain {
   uint    itemUPC,
   address ownerID,
   address originFarmerID,
-  string  originFarmName,
-  string  originFarmInformation,
-  string  originFarmLatitude,
-  string  originFarmLongitude
-  ) 
+  string memory originFarmName,
+  string memory originFarmInformation,
+  string memory originFarmLatitude,
+  string memory originFarmLongitude
+  )
   {
   // Assign values to the 8 parameters
-  
-    
-  return 
+
+  return
   (
   itemSKU,
   itemUPC,
@@ -292,23 +293,22 @@ contract SupplyChain {
   }
 
   // Define a function 'fetchItemBufferTwo' that fetches the data
-  function fetchItemBufferTwo(uint _upc) public view returns 
+  function fetchItemBufferTwo(uint _upc) public view returns
   (
   uint    itemSKU,
   uint    itemUPC,
   uint    productID,
-  string  productNotes,
+  string memory productNotes,
   uint    productPrice,
   uint    itemState,
   address distributorID,
   address retailerID,
   address consumerID
-  ) 
+  )
   {
     // Assign values to the 9 parameters
-  
-    
-  return 
+
+  return
   (
   itemSKU,
   itemUPC,
