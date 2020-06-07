@@ -217,10 +217,9 @@ contract SupplyChain {
   // and any excess ether sent is refunded back to the buyer
   function buyItem(uint _upc) public payable forSale(_upc) paidEnough(items[_upc].productPrice) checkValue(_upc) {
     // Update the appropriate fields - ownerID, distributorID, itemState
-    Item memory item = items[_upc];
-    item.ownerID = msg.sender;
-    item.distributorID = msg.sender;
-    item.itemState = State.Sold;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].distributorID = msg.sender;
+    items[_upc].itemState = State.Sold;
     // Transfer money to farmer
     items[_upc].originFarmerID.transfer(items[_upc].productPrice);
     // emit the appropriate event
@@ -240,10 +239,9 @@ contract SupplyChain {
   // Use the above modifiers to check if the item is shipped
   function receiveItem(uint _upc) public shipped(_upc) {
     // Update the appropriate fields - ownerID, retailerID, itemState
-    Item memory item = items[_upc];
-    item.ownerID = msg.sender;
-    item.retailerID = msg.sender;
-    item.itemState = State.Received;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].retailerID = msg.sender;
+    items[_upc].itemState = State.Received;
     // Emit the appropriate event
     emit Received(_upc);
   }
@@ -252,10 +250,9 @@ contract SupplyChain {
   // Use the above modifiers to check if the item is received
   function purchaseItem(uint _upc) public received(_upc) {
     // Update the appropriate fields - ownerID, consumerID, itemState
-    Item memory item = items[_upc];
-    item.ownerID = msg.sender;
-    item.consumerID = msg.sender;
-    item.itemState = State.Purchased;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].consumerID = msg.sender;
+    items[_upc].itemState = State.Purchased;
     // Emit the appropriate event
     emit Purchased(_upc);
   }
