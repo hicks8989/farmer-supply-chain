@@ -43,6 +43,12 @@ Finally, compile Solidity smart contracts:
 > truffle compile
 ```
 
+### Configuration
+In order to get your own instance of the StarNotary DAPP running, certain configuration variables must be set:
+
+* Create a secret file called `.secret` in the root directory and insert the mnemonic for your metamask account.
+* Set the infuraKey variable in the `truffle-config` file to your infura project key.
+
 ### Running
 In order to run the application, the front and back ends must be run seperately.
 
@@ -76,8 +82,52 @@ truffle (develop)> compile
 truffle (develop)> migrate --reset
 ```
 
+### Deployment
+In order to deploy your own instance of the project, you will need to:
+
+1. Create a project in [Infura](infura.io).
+2. Get the project ID for your network of choice.
+3. Update the `truffle-config.js` file with your network settings and project ID.
+4. Make sure you are on a MetaMask account with enough ether for the network of choice and migrate the files.
+
+```
+> truffle migrate --reset --network <network>
+```
+
+### Testing
+In order to run tests for the project, you will need to:
+
+1. Make sure all contracts have been compiled and migrated with the truffle terminal.
+
+```
+> truffle develop
+truffle(develop)> compile
+truffle(develop)> migrate --reset
+```
+
+2. Run the truffle test command.
+
+```
+truffle(develop)> test
+```
+
+## Layout
+Application is built to allow farmers, distributrors, retailers, and consumers to seamlessly interact over the blockchain:
+
+### Activity Diagram
+<img src="./uml/activity_diagram.svg">
+
+### Data Model Diagram
+<img src="./uml/data_model_diagram.svg">
+
+### Sequence Diagram
+<img src="./uml/sequence_diagram.svg">
+
+
+### State Diagram
+<img src="./uml/state_diagram.svg">
+
 ## Built With
-* [Ethereum](https://ethereum.org/) - Ethereum is a decentralized platform that runs smart contracts
-* [IPFS](https://ipfs.io/) - IPFS is the Distributed Web | A peer-to-peer hypermedia protocol to make the web faster, safer, and more open.
+* [Ethereum](https://ethereum.org/) - Ethereum is a decentralized platform that runs smart contracts.
 * [Truffle](https://www.trufflesuite.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.
 * [NodeJS](https://www.nodejs.org/) - Node.js is an open-source, cross-platform, JavaScript runtime environment that executes JavaScript code outside a web browser.
