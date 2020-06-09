@@ -12,7 +12,7 @@ contract DistributorRole {
   event DistributorAdded(address indexed account);
   event DistributorRemoved(address indexed account);
   // Define a struct 'distributors' by inheriting from 'Roles' library, struct Role
-  Roles.Role private distributors;
+  Roles.Role distributors;
   // In the constructor make the address that deploys this contract the 1st distributor
   constructor() public {
     _addDistributor(msg.sender);
@@ -30,12 +30,12 @@ contract DistributorRole {
   }
 
   // Define a function 'addDistributor' that adds this role
-  function addDistributor(address account) public onlyDistributor {
+  function addDistributor(address account) external onlyDistributor {
     _addDistributor(account);
   }
 
   // Define a function 'renounceDistributor' to renounce this role
-  function renounceDistributor() public {
+  function renounceDistributor() external {
     _removeDistributor(msg.sender);
   }
 

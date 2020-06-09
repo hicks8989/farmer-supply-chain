@@ -12,7 +12,7 @@ contract ConsumerRole {
   event ConsumerAdded(address indexed account);
   event ConsumerRemoved(address indexed account);
   // Define a struct 'consumers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private consumers;
+  Roles.Role consumers;
   // In the constructor make the address that deploys this contract the 1st consumer
   constructor() public {
     _addConsumer(msg.sender);
@@ -30,12 +30,12 @@ contract ConsumerRole {
   }
 
   // Define a function 'addConsumer' that adds this role
-  function addConsumer(address account) public onlyConsumer {
+  function addConsumer(address account) external onlyConsumer {
     _addConsumer(account);
   }
 
   // Define a function 'renounceConsumer' to renounce this role
-  function renounceConsumer() public {
+  function renounceConsumer() external {
     _removeConsumer(msg.sender);
   }
 
