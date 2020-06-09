@@ -13,7 +13,7 @@ contract FarmerRole {
   event FarmerRemoved(address indexed account);
 
   // Define a struct 'farmers' by inheriting from 'Roles' library, struct Role
-  Roles.Role farmers;
+  Roles.Role internal farmers;
 
   // In the constructor make the address that deploys this contract the 1st farmer
   constructor() public {

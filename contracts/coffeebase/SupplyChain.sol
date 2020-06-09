@@ -39,7 +39,7 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole,
     Purchased   // 7
     }
 
-  State constant defaultState = State.Harvested;
+  State constant internal defaultState = State.Harvested;
 
   // Define a struct 'Item' with the following fields:
   struct Item {

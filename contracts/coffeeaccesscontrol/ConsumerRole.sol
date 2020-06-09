@@ -12,7 +12,7 @@ contract ConsumerRole {
   event ConsumerAdded(address indexed account);
   event ConsumerRemoved(address indexed account);
   // Define a struct 'consumers' by inheriting from 'Roles' library, struct Role
-  Roles.Role consumers;
+  Roles.Role internal consumers;
   // In the constructor make the address that deploys this contract the 1st consumer
   constructor() public {
     _addConsumer(msg.sender);
