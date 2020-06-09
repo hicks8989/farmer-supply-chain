@@ -13,7 +13,7 @@ contract FarmerRole {
   event FarmerRemoved(address indexed account);
 
   // Define a struct 'farmers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private farmers;
+  Roles.Role internal farmers;
 
   // In the constructor make the address that deploys this contract the 1st farmer
   constructor() public {
@@ -32,12 +32,12 @@ contract FarmerRole {
   }
 
   // Define a function 'addFarmer' that adds this role
-  function addFarmer(address account) public onlyFarmer {
+  function addFarmer(address account) external onlyFarmer {
     _addFarmer(account);
   }
 
   // Define a function 'renounceFarmer' to renounce this role
-  function renounceFarmer() public {
+  function renounceFarmer() external {
     _removeFarmer(msg.sender);
   }
 
