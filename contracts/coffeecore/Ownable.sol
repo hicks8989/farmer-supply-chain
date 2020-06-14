@@ -3,7 +3,7 @@ pragma solidity >=0.4.24;
 
 /// Provides basic authorization control
 contract Ownable {
-    address payable origOwner;
+    address payable private origOwner;
 
     // Define an Event
     event TransferOwnership(address indexed oldOwner, address indexed newOwner);
@@ -15,7 +15,7 @@ contract Ownable {
     }
 
     /// Look up the address of the owner
-    function owner() external view returns (address) {
+    function owner() public view returns (address) {
         return origOwner;
     }
 
@@ -31,13 +31,13 @@ contract Ownable {
     }
 
     /// Define a function to renounce ownerhip
-    function renounceOwnership() external onlyOwner {
+    function renounceOwnership() public onlyOwner {
         emit TransferOwnership(origOwner, address(0));
         origOwner = address(0);
     }
 
     /// Define a public function to transfer ownership
-    function transferOwnership(address payable newOwner) external onlyOwner {
+    function transferOwnership(address payable newOwner) public onlyOwner {
         _transferOwnership(newOwner);
     }
 
@@ -49,7 +49,7 @@ contract Ownable {
     }
 
     // Define a function 'kill' if required
-    function kill() external payable {
+    function kill() public payable {
         if (msg.sender == origOwner) {
             selfdestruct(origOwner);
         }
