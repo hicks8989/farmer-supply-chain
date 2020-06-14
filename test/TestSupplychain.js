@@ -19,7 +19,7 @@ contract('SupplyChain', function(accounts) {
     const distributorID = accounts[2];
     const retailerID = accounts[3];
     const consumerID = accounts[4];
-    const emptyAddress = '0x00000000000000000000000000000000000000';
+    const newOwnerID = accounts[5];
 
     ///Available Accounts
     ///==================
@@ -40,6 +40,140 @@ contract('SupplyChain', function(accounts) {
     console.log("Distributor: accounts[2] ", accounts[2]);
     console.log("Retailer: accounts[3] ", accounts[3]);
     console.log("Consumer: accounts[4] ", accounts[4]);
+    console.log("New Owner: accounts[5] ", accounts[5]);
+
+    it("Testing smart contract function transferOwnership() that transfers contract ownership", async() => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event TransferOwnership()
+        await supplyChain.TransferOwnership((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Transfer ownership from current owner to new owner address
+        await supplyChain.transferOwnership(newOwnerID, {from: ownerID});
+
+        // Verify that ownership has been transfered
+        const isOwner = await supplyChain.isOwner({from: newOwnerID});
+
+        // Verify the results
+        assert(isOwner, "Invalid owner ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function renounceOwnership() that renounces contract ownership", async() => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event TransferOwnership()
+        await supplyChain.TransferOwnership((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Renounce ownership from new owner back to original owner address
+        await supplyChain.renounceOwnership({from: newOwnerID});
+
+        // Verify that ownership has been transfered
+        const isOwner = await supplyChain.isOwner({from: newOwnerID});
+
+        // Verify the results
+        assert(!isOwner, "Invalid owner ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function addFarmer() that allows a farmer to be added", async() => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event FarmerAdded()
+        await supplyChain.FarmerAdded((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Add the farmer address
+        await supplyChain.addFarmer(originFarmerID, {from: ownerID});
+
+        // Verify the farmer address has been added
+        const isFarmer = await supplyChain.isFarmer(originFarmerID);
+
+        // Verify the results
+        assert(isFarmer, "Invalid Farmer ID");
+        assert(eventEmitted, "Invalid event emitted");
+
+    });
+
+    it("Testing smart contract function addDistributor() that allows a distributor to be added", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event DistributorAdded()
+        await supplyChain.DistributorAdded((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Add the distributor address
+        await supplyChain.addDistributor(distributorID, {from: ownerID});
+
+        // Verify the distributor address has been added
+        const isDistributor = await supplyChain.isDistributor(distributorID);
+
+        // Verify the results
+        assert(isDistributor, "Invalid Distributor ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function addRetailer() that allows a retailer to be added", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event RetailerAdded()
+        await supplyChain.RetailerAdded((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Add the retailer address
+        await supplyChain.addRetailer(retailerID, {from: ownerID});
+
+        // Verify the retailer address has been added
+        const isRetailer = await supplyChain.isRetailer(retailerID);
+
+        // Verify the results
+        assert(isRetailer, "Invalid Retailer ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function addConsumer() that allows a consumer to be added", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event ConsumerAdded()
+        await supplyChain.ConsumerAdded((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Add the consumer address
+        await supplyChain.addConsumer(consumerID, {from: ownerID});
+
+        // Verify the consumer address has been added
+        const isConsumer = await supplyChain.isConsumer(consumerID);
+
+        // Verify the results
+        assert(isConsumer, "Invalid Consumer ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
 
     // 1st Test
     it("Testing smart contract function harvestItem() that allows a farmer to harvest coffee", async() => {
@@ -306,6 +440,94 @@ contract('SupplyChain', function(accounts) {
         assert.equal(resultBufferTwo[6], distributorID, "Error: Invalid distributor ID");
         assert.equal(resultBufferTwo[7], retailerID, "Error: Invalid retailer ID");
         assert.equal(resultBufferTwo[8], consumerID, "Error: Invalid consumer ID");
+    });
+
+    it("Testing smart contract function renounceFarmer() that allows a farmer to be deleted", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event FarmerRemoved()
+        await supplyChain.FarmerRemoved((err, res) => {
+            eventEmitted = true;
+        });
+
+        // remove the farmer address
+        await supplyChain.renounceFarmer({from: originFarmerID});
+
+        // Verify the farmer address has been removed
+        const isFarmer = await supplyChain.isFarmer(originFarmerID);
+
+        // Verify the results
+        assert(!isFarmer, "Invalid Farmer ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function renounceDistributor() that allows a distributor to be deleted", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event DistributorRemoved()
+        await supplyChain.DistributorRemoved((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Remove the distributor address
+        await supplyChain.renounceDistributor({from: distributorID});
+
+        // Verify the distributor address has been removed
+        const isDistributor = await supplyChain.isDistributor(distributorID);
+
+        // Verify the results
+        assert(!isDistributor, "Invalid Distributor ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function renounceRetailer() that allows a retailer to be deleted", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event RetailerRemoved()
+        await supplyChain.RetailerRemoved((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Remove the retailer address
+        await supplyChain.renounceRetailer({from: retailerID});
+
+        // Verify the retailer address has been removed
+        const isRetailer = await supplyChain.isRetailer(retailerID);
+
+        // Verify the results
+        assert(!isRetailer, "Invalid Retailer ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function renounceDistributor() that allows a distributor to be deleted", async () => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event ConsumerRemoved()
+        await supplyChain.ConsumerRemoved((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Remove the consumer address
+        await supplyChain.renounceConsumer({from: consumerID});
+
+        // Verify the consumer address has been removed
+        const isConsumer = await supplyChain.isConsumer(consumerID);
+
+        // Verify the results
+        assert(!isConsumer, "Invalid Distributor ID");
+        assert(eventEmitted, "Invalid event emitted");
     });
 
 });
