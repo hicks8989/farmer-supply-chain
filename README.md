@@ -1,7 +1,7 @@
 # Farmer DAPP
 Decentralized supply chain application built on the Ethereum network using solidity smart contracts. Program allows for farmers, distributors, retailers, and consumers to seamlessly interact over the block chain.
 
-This application is currently deployed to the Rinkeby Ethereum test network. Contract address is `0x80cbC9519A98Ab7B9A7628569619cF962C5286a6` and transaction hash is `0x7e295395edf832614eccdb535436ea0200399884544c4c4de8b3dc686e539648`.
+This application is currently deployed to the Rinkeby Ethereum test network. Contract address is `0x6BB0e0e2e286b3F7f0F5e06385fC3E8d888ef1a5` and transaction hash is `0x2552a4ecff0a8486a832a7472fe60555c9b52b5778ec02c6ad66be17ca92ed49`.
 
 ## Getting Started
 Instructions to get the Farmer DAPP installed and running on your local machine.
