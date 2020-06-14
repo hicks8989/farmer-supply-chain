@@ -19,7 +19,7 @@ contract('SupplyChain', function(accounts) {
     const distributorID = accounts[2];
     const retailerID = accounts[3];
     const consumerID = accounts[4];
-    const emptyAddress = '0x00000000000000000000000000000000000000';
+    const newOwnerID = accounts[5];
 
     ///Available Accounts
     ///==================
@@ -40,6 +40,51 @@ contract('SupplyChain', function(accounts) {
     console.log("Distributor: accounts[2] ", accounts[2]);
     console.log("Retailer: accounts[3] ", accounts[3]);
     console.log("Consumer: accounts[4] ", accounts[4]);
+    console.log("New Owner: accounts[5] ", accounts[5]);
+
+    it("Testing smart contract function transferOwnership() that transfers contract ownership", async() => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event TransferOwnership()
+        await supplyChain.TransferOwnership((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Transfer ownership from current owner to new owner address
+        await supplyChain.transferOwnership(newOwnerID, {from: ownerID});
+
+        // Verify that ownership has been transfered
+        const isOwner = await supplyChain.isOwner({from: newOwnerID});
+
+        // Verify the results
+        assert(isOwner, "Invalid owner ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
+
+    it("Testing smart contract function renounceOwnership() that renounces contract ownership", async() => {
+        const supplyChain = await SupplyChain.deployed();
+
+        // Declare and Initialize a variable for event
+        let eventEmitted = false;
+
+        // Watch the emitted event TransferOwnership()
+        await supplyChain.TransferOwnership((err, res) => {
+            eventEmitted = true;
+        });
+
+        // Renounce ownership from new owner back to original owner address
+        await supplyChain.renounceOwnership({from: newOwnerID});
+
+        // Verify that ownership has been transfered
+        const isOwner = await supplyChain.isOwner({from: newOwnerID});
+
+        // Verify the results
+        assert(!isOwner, "Invalid owner ID");
+        assert(eventEmitted, "Invalid event emitted");
+    });
 
     it("Testing smart contract function addFarmer() that allows a farmer to be added", async() => {
         const supplyChain = await SupplyChain.deployed();
