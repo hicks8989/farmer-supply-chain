@@ -39,7 +39,7 @@ library Roles {
     view
     returns (bool)
   {
-    require(account != address(0), "Cannot search for contract owner in role");
+    require(account != address(0), "Cannot search for account owner in role");
     return role.bearer[account];
   }
 }
