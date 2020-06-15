@@ -28,7 +28,7 @@ To run a local instance of the project, you must first install project files and
 Next, change to the project root directory:
 
 ```
-> cd farmer-dapp
+> cd farmer-supply-chain
 ```
 
 Then install project dependencies:
